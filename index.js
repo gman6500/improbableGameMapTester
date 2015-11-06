@@ -14,15 +14,15 @@ var canvas = document.getElementById("canvas"),
     width = 1120,
     height = 590,
     player = {
-        x: width / 10,
-        y: height - 15,
+        x:parseInt(prompt("what x would you like to start at? (1120 max)")),
+        y: parseInt(prompt("what y would you like to start at? (590 down)")),
         width: 10,
         height: 10,
         speed: 4,
         velX: 0,
         velY: 0,
-        startX:prompt("what x would you like to start at? (1120 max)"),
-        startY:prompt("what y would you like to start at? (590 down)"),
+        startX:0,
+        startY:0,
         startX: width/2,
         startY: height - 55,
         level:1,
@@ -48,9 +48,8 @@ lava= levelObject.allLava;
 boxes=levelObject.allBlocks;
 jumpPow=levelObject.allJumps;
 goal=levelObject.allGoals;
-console.log(boxes)
-console.log(levelObject)
-
+player.startX=player.x;
+player.startY=player.y;
 
 function update() {
     
@@ -85,7 +84,7 @@ function update() {
     ctx.clearRect(0, 0, width, height);
     ctx.fillStyle = "black";
     ctx.beginPath();
-    console.log("drawing player")
+    //console.log("drawing player")
     player.grounded = false;
     for (var i = 0; i < boxes.length; i++) {
         
@@ -123,7 +122,7 @@ function update() {
  
     }
     ctx.fill();
-    console.log("Drawing lava")
+    //console.log("Drawing lava")
     ctx.beginPath();
     ctx.fillStyle="red";
     for(var i=0;i<lava.length; i++){
@@ -132,13 +131,12 @@ function update() {
             var dir=colCheck(player,lava[i]);
             if(dir==="l"||dir==="r"||dir==="b"||dir==="t"){
                 reset();
-                typeStory(player.level);
             }
         
     }
     ctx.fill();
     ctx.beginPath();
-    console.log("drawing goal")
+    //console.log("drawing goal")
     ctx.fillStyle="green";
     for(var i=0;i<goal.length; i++){
         
@@ -146,14 +144,12 @@ function update() {
             var dir=colCheck(player,goal[i]);
             if(dir==="l"||dir==="r"||dir==="b"||dir==="t"){
                 player.level++;
-                loadLevel(player.level)
-                typeStory(player.level)
             }
         
     }
     ctx.fill();
     ctx.beginPath();
-    console.log("drawing jump pows")
+    //console.log("drawing jump pows")
     ctx.fillStyle="yellow";
     for(var i=0; i<jumpPow.length;i++){
         
@@ -161,7 +157,7 @@ function update() {
             var dir=colCheck(player,jumpPow[i]);
             if(dir==="l"||dir==="r"||dir==="b"||dir==="t"){
                 player.doubleJump=true
-                jumpPow[i].level*=-1;
+                jumpPow[i].x*=-1;
             }
         
     }
@@ -174,21 +170,19 @@ function update() {
     player.y += player.velY;
     ctx.beginPath();
     ctx.fillStyle="blue"
-    console.log("drawing player")
+    //console.log("drawing player")
     ctx.rect(player.x,player.y,player.width,player.height)
     ctx.fill();
     ctx.beginPath();
     ctx.fillStyle="pink";
-    console.log("drawing ghosts")
+    //console.log("drawing ghosts")
     ctx.globalAlpha=0.5;
     for(i=0;i<ghosts.length;i++){
         ctx.fillRect(ghosts[i].x,ghosts[i].y,ghosts[i].width,ghosts[i].height);
     }
     ctx.globalAlpha=1;
     ctx.fill();
-    setTimeout(function(){
     requestAnimationFrame(update);
-    },20)
 }
  
 function colCheck(shapeA, shapeB) {
@@ -238,7 +232,7 @@ function reset(){
     player.velX=0;
     player.velY=0;
     for(var i=0;i<jumpPow.length;i++){
-        jumpPow[i].level=Math.abs(jumpPow[i].level);
+        jumpPow[i].x=Math.abs(jumpPow[i].x);
     }
 }
 document.body.addEventListener("keydown", function (e) {
@@ -249,6 +243,15 @@ document.body.addEventListener("keyup", function (e) {
     keys[e.keyCode] = false;
 });
 window.addEventListener("load", function () {
+    
+    
     update();
 });
-update();
+setInterval(function(){
+    for(var i=0;i<jumpPow.length;i++){
+        jumpPow[i].x=Math.abs(jumpPow[i].x);
+    }
+    console.log("x: "+player.x);
+    console.log("y: "+player.y)
+},4000)
+// update();
