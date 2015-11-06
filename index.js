@@ -14,8 +14,8 @@ var canvas = document.getElementById("canvas"),
     width = 1120,
     height = 590,
     player = {
-        x:parseInt(prompt("what x would you like to start at? (1120 max)")),
-        y: parseInt(prompt("what y would you like to start at? (590 down)")),
+        x:0,
+        y:0,
         width: 10,
         height: 10,
         speed: 4,
@@ -48,6 +48,8 @@ lava= levelObject.allLava;
 boxes=levelObject.allBlocks;
 jumpPow=levelObject.allJumps;
 goal=levelObject.allGoals;
+player.x=levelObject.playerStart.x;
+player.y=levelObject.playerStart.y;
 player.startX=player.x;
 player.startY=player.y;
 
